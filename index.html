@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+    <style>
+        FOOTER {
+            position: fixed;
+            bottom: 5px;
+            left: 5px;
+            font-size: 1rem;
+        }
+    </style>
+    <div class="container">
+        <h1 id='serverTitle'>Moni Secure Server</h1>
+
+        <form>
+            <div class="form-group">
+              <label for="formEmail">Email address</label>
+              <input id="formEmail" type="email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="formPassword">Password</label>
+                <input id="formPassword" type="password" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="formAuth">Auth Code</label>
+              <select id="formAuth" class="form-control">
+                <option>1345</option>
+                <option>2456</option>
+                <option>56773</option>
+                <option>678874</option>
+                <option>5789897</option>
+              </select>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="rememberLogin">
+                <label class="form-check-label" for="rememberLogin">
+                  Remember Login
+                </label>
+              </div>
+            <button id='loginBtn' class='btn btn-lg btn-primary'>Login Now</button>
+        </form>
+    </div>
+    <footer>...</footer>
+
+    <script>
+        // global variables
+        const serverTime = new Date();
+        const serverTitleDOM = document.querySelector('#serverTitle');
+
+        // functions
+        function loginUser(){
+            console.log( `[loginUser]` )
+        }
+
+        function initializeLogin(){
+            console.log( `[initializeLogin]` )
+
+            serverTitleDOM.innerHTML = "Loading";
+
+            document.querySelector('#formEmail').value = localStorage.email ? localStorage.email : "";
+            document.querySelector('#formPassword').value = localStorage.password ? localStorage.password : "";
+            document.querySelector('#formAuth').value = localStorage.auth ? localStorage.auth : "2456";
+            document.querySelector('#rememberLogin').checked = localStorage.isChecked ? true : false;
+
+            // set the server time
+            document.querySelector('footer').innerHTML = serverTime;
+        }
+
+        function toggleRememberLogin(){
+            console.log( `[toggleRememberLogin]` )
+
+            var isChecked = document.querySelector('#rememberLogin').checked;
+            console.log( ` .. isChecked: ${isChecked}` )
+
+            if( isChecked ){
+                // remember user login
+                localStorage.email = document.querySelector('#formEmail').value;
+                localStorage.password = document.querySelector('#formPassword').value;
+                localStorage.auth = document.querySelector('#formAuth').value;
+                localStorage.isChecked = true;
+            } else {
+                // un-remember user login
+                delete localStorage.email;
+                delete localStorage.password;
+                delete localStorage.auth;
+                delete localStorage.isChecked;
+            }
+        }
+
+        // bindings & initialization
+        document.querySelector('#loginBtn').addEventListener( 'click', loginUser );
+        document.querySelector('#rememberLogin').addEventListener( 'change', toggleRememberLogin );
+
+        initializeLogin();
+
+        console.log( `serverTime = ${serverTime}` );
+
+        serverTitleDOM.innerHTML = "Login Ready";
+
+    </script>
+</body>
+</html>
